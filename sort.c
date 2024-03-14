@@ -31,58 +31,57 @@ size_t Size(void* ptr)
 // extraMemoryAllocated counts bytes of extra memory allocated
 void mergeSort(int pData[], int l, int r)
 {
-    if (l < r) {
-        // Find the middle point
+    if (l < r) 
+	{
+
         int m = l + (r - l) / 2;
 
-        // Sort first and second halves
         mergeSort(pData, l, m);
         mergeSort(pData, m + 1, r);
 
-        // Merge the sorted halves
         int n1 = m - l + 1;
         int n2 = r - m;
 
-        // Create temporary arrays using Alloc
-        int *L = (int *)Alloc(n1 * sizeof(int));
-        int *R = (int *)Alloc(n2 * sizeof(int));
+ 
+        int *left = (int *)Alloc(n1 * sizeof(int));
+        int *right = (int *)Alloc(n2 * sizeof(int));
 
-        // Copy data to temporary arrays L[] and R[]
         for (int i = 0; i < n1; i++)
-            L[i] = pData[l + i];
-        for (int j = 0; j < n2; j++)
-            R[j] = pData[m + 1 + j];
+		{
+            left[i] = pData[l + i];
+		}
 
-        // Merge the temporary arrays back into pData[l..r]
+        for (int i = 0; i < n2; i++)
+		{
+    		right[i] = pData[m + 1 + i];
+		}
+
         int i = 0, j = 0, k = l;
         while (i < n1 && j < n2) {
-            if (L[i] <= R[j]) {
-                pData[k] = L[i];
+            if (left[i] <= right[j]) {
+                pData[k] = left[i];
                 i++;
             } else {
-                pData[k] = R[j];
+                pData[k] = right[j];
                 j++;
             }
             k++;
         }
 
-        // Copy the remaining elements of L[], if there are any
         while (i < n1) {
-            pData[k] = L[i];
+            pData[k] = left[i];
             i++;
             k++;
         }
 
-        // Copy the remaining elements of R[], if there are any
         while (j < n2) {
-            pData[k] = R[j];
+            pData[k] = right[j];
             j++;
             k++;
         }
 
-        // Deallocate temporary arrays
-        DeAlloc(L);
-        DeAlloc(R);
+        DeAlloc(left);
+        DeAlloc(right);
     }
 }
 
